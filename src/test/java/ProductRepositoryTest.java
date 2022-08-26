@@ -7,6 +7,8 @@ public class ProductRepositoryTest {
     Product product2 = new Smartphone(22, "Smartphone 1", 200, "Manufacture 1");
     Product product3 = new Book(33, "Book 2", 300, "Author 2");
     Product product4 = new Smartphone(44, "Smartphone 2", 400, "Manufacture 2");
+    Product product5 = new Smartphone(23, "Smartphone 3", 500, "Manufacture 3");
+    Product product6 = new Smartphone(22, "Smartphone 4", 600, "Manufacture 4");
 
 
     ProductRepository repo = new ProductRepository();
@@ -20,24 +22,23 @@ public class ProductRepositoryTest {
     }
 
     @Test
-    public void saveProduct() {
+    public void saveProductWithNewId() {
 
-        Product[] expected = {product1, product2, product3, product4};
+        repo.save(product5);
+
+        Product[] expected = {product1, product2, product3, product4, product5};
         Product[] actual = repo.findAll();
 
         Assertions.assertArrayEquals(expected, actual);
     }
 
-//    @Test
-//    public void removeById() {
-//
-//        repo.removeById(product3.getId());
-//
-//        Product[] expected = {product1, product2, product4};
-//        Product[] actual = repo.findAll();
-//
-//        Assertions.assertArrayEquals(expected, actual);
-//    }
+    @Test
+    public void saveProductWithExistingId() {
+
+        Assertions.assertThrows(AlreadyExistsException.class, () -> {
+            repo.save(product6);
+        });
+    }
 
     @Test
     public void removeByIdExistingId() {
@@ -57,17 +58,4 @@ public class ProductRepositoryTest {
             repo.removeById(34);
         });
     }
-
-
-//        @Test
-//    public void findById() {
-//
-//        repo.findById(33);
-//
-//        Product[] expected = {product3};
-//        Product[] actual = repo.findById(33);
-//
-//        Assertions.assertArrayEquals(expected, actual);
-//    }
-
 }
